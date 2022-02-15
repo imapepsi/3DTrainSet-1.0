@@ -7,14 +7,18 @@ class Engine(Train):
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height/2
-        doorHeight = lowerHeight - 0.75
 
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
         mc.polyBevel(lowerBox[0], offset=0.3)
-
         mc.move(-(lowerHeight*2), y=True, absolute=True)
 
-        return lowerBox
+        tube = mc.polyCylinder(r=lowerWidth, h=self._depth, name="tube#")
+        mc.rotate(90, x=True, absolute=True)
+        mc.move(lowerHeight, y=True, absolute=True)
+
+        lowerCompartment = mc.polyBoolOp(lowerBox[0], tube[0], op=1, n="lowerCompartment#")
+
+        return lowerCompartment
 
     def createBaseCar(self):
         box = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")

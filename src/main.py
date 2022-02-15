@@ -2,7 +2,9 @@
 Mia Seppi
 CSANM 258 - Winter 2022
 
-3D Train Set 1.0 - (6th version of pythonTrainTrackSet)
+3D Train Set 1.0 - (7th version of all pythonTrainTrackSet)
+
+1.0 version of module set up
 
 """
 
@@ -15,15 +17,7 @@ import TrackObject
 """ Execute code """
 
 
-def buildTrack():
-    t = TrackObject.TrainTrackObj()
-    t.buildPlanks()
-    t.buildRails()
-    t.addBolts()
-
 print("Track")
 myWindow = GuiWindow()
-
-#buildTrack()
 
 print("\n" + "Program Complete" + "\n")  # Debug Checker
