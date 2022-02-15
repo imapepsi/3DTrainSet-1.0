@@ -7,16 +7,17 @@ CSANM 258 - Winter 2022
 1.0 version of module set up
 
 """
-
+import importlib
 import sys
 sys.path.append("/Users/miaseppi/Code-local/3DTrainSet-1.0/src")
 
-from GuiWindowObject import GuiWindow
+import GuiWindowObject
+importlib.reload(GuiWindowObject)
 
 """ Execute code """
 
 
 print("Track")
-myWindow = GuiWindow()
+myWindow = GuiWindowObject.GuiWindow()
 
 print("\n" + "Program Complete" + "\n")  # Debug Checker

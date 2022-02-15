@@ -1,18 +1,32 @@
 import maya.cmds as mc
-from TrainObject import Train
+import TrainObject
+
+import importlib
+importlib.reload(TrainObject)
 
 
-class Engine(Train):
+class Engine(TrainObject.Train):
 
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height/2
 
+        lowerBoxPanel = mc.polyCube(w=lowerWidth-1, h=lowerHeight-1, d=1, name="lowerBoxPanel#")
+        mc.move(-self._depth, z=True, absolute=True)
+
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
         mc.polyBevel(lowerBox[0], offset=0.3)
-        mc.move(-(lowerHeight*2), y=True, absolute=True)
 
-        tube = mc.polyCylinder(r=lowerWidth / 2, h=20, name="tube#")
+        lowerBox = mc.polyBoolOp(lowerBox[0], lowerBoxPanel[0], op=2, n="lowerBox#")
+        mc.move(-(lowerHeight*2), y=True, absolute=True)
+        mc.delete(lowerBox[0], constructionHistory=True)
+
+        octagon = 8
+        innerTube = mc.polyCylinder(r=lowerWidth / 4, h=self._depth+2, subdivisionsAxis=octagon, name="innerTube#")
+        outerTube = mc.polyCylinder(r=lowerWidth / 2, h=self._depth, name="outerTube#")
+        tube = mc.polyBoolOp(outerTube[0], innerTube[0], op=1, n="tube#")
+        mc.delete(tube[0], constructionHistory=True)
+
         distBetweenRings = 2
         numRings = self._depth/distBetweenRings
         startY = -self._depth/2 + distBetweenRings

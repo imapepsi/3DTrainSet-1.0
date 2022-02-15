@@ -1,6 +1,9 @@
 import maya.cmds as mc
 import TrainTrackSetObject
 
+import importlib
+importlib.reload(TrainTrackSetObject)
+
 
 class GuiWindow:
     def __init__(self):

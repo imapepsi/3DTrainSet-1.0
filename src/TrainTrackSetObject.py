@@ -1,12 +1,20 @@
 import maya.cmds as mc
 from MayaObject import MayaObj
-from TrackObject import TrainTrackObj
-from TrainObject import Train
-from EngineObject import Engine
-from CarTypeAObject import CarTypeA
+import TrackObject
+import TrainObject
+import EngineObject
+import CarTypeAObject
+import CarTypeBObject
 from random import seed
 from random import randint
 from time import time
+
+import importlib
+importlib.reload(TrackObject)
+importlib.reload(TrainObject)
+importlib.reload(EngineObject)
+importlib.reload(CarTypeAObject)
+importlib.reload(CarTypeBObject)
 
 
 class TrainTrackSet(MayaObj):
@@ -23,7 +31,7 @@ class TrainTrackSet(MayaObj):
 
         trackLocZ = 0
         for i in range(self._numTracks):
-            t = TrainTrackObj(numPlanks=self._numPlanks)
+            t = TrackObject.TrainTrackObj(numPlanks=self._numPlanks)
             t.buildPlanks()
             t.buildRails()
             t.addBolts()
@@ -42,27 +50,32 @@ class TrainTrackSet(MayaObj):
         self._numCars = numCars
 
     def buildTrain(self):
-        self._engine.append(Engine())
+        self._engine.append(EngineObject.Engine())
         self._engine[0].buildBaseAndWheels()
 
         seed(time())
         z = 25
         for i in range(self._numCars):
-            carType = randint(1, 2)
+            carType = randint(1, 3)
 
             if carType == 1:
-                self._cars.append(Train())
+                self._cars.append(TrainObject.Train())
                 self._cars[-1].buildBaseAndWheels()
                 mc.move(z, z=True, absolute=True)
 
             elif carType == 2:
-                self._cars.append(CarTypeA())
+                self._cars.append(CarTypeAObject.CarTypeA())
+                self._cars[-1].buildBaseAndWheels()
+                mc.move(z, z=True, absolute=True)
+
+            elif carType == 3:
+                self._cars.append(CarTypeBObject.CarTypeB())
                 self._cars[-1].buildBaseAndWheels()
                 mc.move(z, z=True, absolute=True)
 
             z += 25 # Length of a whole train is 29
 
-        self._engine.append(Engine())
+        self._engine.append(EngineObject.Engine())
         self._engine[1].buildBaseAndWheels()
         d = self._engine[1].getDepth()
         mc.rotate(180, y=True, absolute=True)
