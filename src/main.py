@@ -12,7 +12,6 @@ import sys
 sys.path.append("/Users/miaseppi/Code-local/3DTrainSet-1.0/src")
 
 from GuiWindowObject import GuiWindow
-import TrackObject
 
 """ Execute code """
 

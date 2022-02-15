@@ -12,9 +12,19 @@ class Engine(Train):
         mc.polyBevel(lowerBox[0], offset=0.3)
         mc.move(-(lowerHeight*2), y=True, absolute=True)
 
-        tube = mc.polyCylinder(r=lowerWidth, h=self._depth, name="tube#")
+        tube = mc.polyCylinder(r=lowerWidth / 2, h=20, name="tube#")
+        distBetweenRings = 2
+        numRings = self._depth/distBetweenRings
+        startY = -self._depth/2 + distBetweenRings
+        for y in range(int(startY), int(numRings), distBetweenRings):
+            ring = mc.polyTorus(r=(lowerWidth/2) + 0.2, tw=0.5)
+            mc.move(y, y=True, absolute=True)
+            tube = mc.polyBoolOp(tube[0], ring[0], op=1, n="tube#")
+            mc.delete(tube[0], constructionHistory=True)
+
         mc.rotate(90, x=True, absolute=True)
-        mc.move(lowerHeight, y=True, absolute=True)
+        mc.move(-(lowerHeight * 3), y=True, absolute=True)
+        mc.delete(tube[0], constructionHistory=True)
 
         lowerCompartment = mc.polyBoolOp(lowerBox[0], tube[0], op=1, n="lowerCompartment#")
 
