@@ -7,31 +7,28 @@ class BoltSet(MayaObj):
     def __init__(self):
         self._names = []
         self._bolts = []
+        self._numBolts = 4
 
     def createSet(self, plankDepth, plankHeight):
         """Create 2 bolts and union"""
-        boltLocZ = plankDepth/4
+        boltLocStartZ = plankDepth/4
+        boltLocZ = boltLocStartZ
         boltLocY = plankHeight
 
         # Create 4 bolt objects
-        for i in range(4):
+        for i in range(self._numBolts):
             b = Bolt()
             b.createBolt()
-            self._bolts.append(b)
-
-        # Space out each bolt
-        for i in range(4):
-            b = self._bolts[i]
-            mc.select(b.getName(), r=True)
             if i > 1:
                 if i == 2:
-                    boltLocZ = plankDepth/4  # Reset
+                    boltLocZ = boltLocStartZ  # Reset
 
                 mc.rotate(180, z=True, absolute=True)  # Flip
                 mc.move(-boltLocY, y=True, absolute=True)  # Move down
 
             mc.move(boltLocZ, z=True, absolute=True)  # Align on the plank
             boltLocZ = -boltLocZ
+            self._bolts.append(b)
 
         # Union
         set1 = mc.polyBoolOp(self._bolts[0].getName(), self._bolts[1].getName(), op=1, name="boltAB")
