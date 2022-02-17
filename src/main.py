@@ -16,7 +16,6 @@ importlib.reload(GuiWindowObject)
 
 """ Execute code """
 
-
 print("Track")
 myWindow = GuiWindowObject.GuiWindow()
 

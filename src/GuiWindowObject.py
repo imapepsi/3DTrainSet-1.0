@@ -51,6 +51,19 @@ class GuiWindow:
         trackSet.setNumCars(numCars)
         trackSet.buildTrain()
 
+        # Plane for rendering
+        plane = mc.polyPlane(w=600, h=600)
+        mc.rotate(-90, z=True, absolute=True)
+        mc.move(-30, x=True, absolute=True)
+
         lambert = mc.shadingNode('lambert', asShader=True)
         mc.select(all=True)
         mc.hyperShade(assign=lambert)
+
+        # Create Light
+        mc.directionalLight()
+        mc.move(30, x=True, absolute=True)
+        mc.rotate(135, y=True, absolute=True)
+
+
+        # rotation=(0, 135, 0)
