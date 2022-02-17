@@ -10,15 +10,20 @@ class Engine(TrainObject.Train):
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height/2
+        lowerBoxBevel = 0.3
+        lowerBoxPositionY = -(lowerHeight*2)
 
-        lowerBoxPanel = mc.polyCube(w=lowerWidth-1, h=lowerHeight-1, d=1, name="lowerBoxPanel#")
+        boxPanelWidth = lowerWidth-1
+        boxPanelHeight = lowerHeight-1
+
+        boxPanel = mc.polyCube(w=boxPanelWidth, h=boxPanelHeight, d=1, name="lowerBoxPanel#")
         mc.move(-self._depth, z=True, absolute=True)
 
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
-        mc.polyBevel(lowerBox[0], offset=0.3)
+        mc.polyBevel(lowerBox[0], offset=lowerBoxBevel)
 
-        lowerBox = mc.polyBoolOp(lowerBox[0], lowerBoxPanel[0], op=2, n="lowerBox#")
-        mc.move(-(lowerHeight*2), y=True, absolute=True)
+        lowerBox = mc.polyBoolOp(lowerBox[0], boxPanel[0], op=2, n="lowerBox#")
+        mc.move(lowerBoxPositionY, y=True, absolute=True)
         mc.delete(lowerBox[0], constructionHistory=True)
 
         octagon = 8

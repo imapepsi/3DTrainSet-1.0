@@ -2,6 +2,7 @@ import maya.cmds as mc
 from MayaObject import MayaObj
 from math import pi
 
+
 class Wire(MayaObj):
     def __init__(self, railHeight=1, plankHeight=0.5, largeRadius=4, mediumRadius=2):
         # Medium radius = half of large
@@ -9,7 +10,8 @@ class Wire(MayaObj):
         self._wheelSet = []
         self._radius = 0.5
         self._bendRadius = (railHeight*2) + plankHeight + largeRadius + mediumRadius
-        self._height = ((((railHeight*2) + plankHeight + largeRadius + mediumRadius) * pi) / 2) + 1  # 1, to give a tiny gap for track to fit between wheels
+        # Self._height: + 1, to give a tiny gap for track to fit between wheels
+        self._height = ((((railHeight*2) + plankHeight + largeRadius + mediumRadius) * pi) / 2) + 1
         self._subdivisions = 30
         self._curve = 90  # Half circle
 

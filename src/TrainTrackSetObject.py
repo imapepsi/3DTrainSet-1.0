@@ -30,7 +30,7 @@ class TrainTrackSet(MayaObj):
         """Build user input number of tracks"""
 
         trackLocZ = 0
-        for i in range(self._numTracks):
+        for i in range(self._numTracks):  # So I don't have to calculate where to stop
             t = TrackObject.TrainTrackObj(numPlanks=self._numPlanks)
             t.buildPlanks()
             t.buildRails()

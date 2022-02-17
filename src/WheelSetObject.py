@@ -17,13 +17,15 @@ class WheelSet(MayaObj):
 
     def createWheel(self):
         """Create 1 wheel"""
+        capScale = 0.25
+
         core = mc.polyCylinder(h=self._coreH, r=self._coreR, n="wheelCore#")
 
         guard = mc.polyCylinder(h=self._guardH, r=self._guardR, n="wheelGaurd#")
         mc.move(self._coreH/2, y=True, absolute=True)
 
         cap = mc.polySphere(r=self._capR, n="cap#")
-        mc.scale(0.25, scaleY=True, absolute=True)
+        mc.scale(capScale, scaleY=True, absolute=True)
         mc.move((-self._coreH/2), y=True, absolute=True)
 
         mainWheelParts = mc.polyBoolOp(core[0], guard[0], op=1, n='coreAndGuard#')
@@ -35,16 +37,18 @@ class WheelSet(MayaObj):
         self._axel = mc.polyCylinder(h=self._axelH, r=self._axelR, n="axel#")
 
     def buildWheelsAndAxel(self):
+        endOfAxel = self._axelH/2  # /2 because wheel starts at 0,0 in the middle of the axel
+
         # axel
         self.createAxel()
         axel = self._axel[0]
 
-        # left
+        # left -
         mc.select(d=True)
         self.createWheel()
         left = self._wheels[0][0]
         mc.select(left, replace=True)
-        mc.move(-self._axelH/2, y=True, absolute=True)
+        mc.move(-endOfAxel, y=True, absolute=True)
 
         # right
         mc.select(d=True)
@@ -52,12 +56,12 @@ class WheelSet(MayaObj):
         right = self._wheels[1][0]
         mc.select(right, replace=True)
         mc.rotate(180, z=True, absolute=True)  # 180 - Flip wheel over
-        mc.move(self._axelH / 2, y=True, absolute=True)
+        mc.move(endOfAxel, y=True, absolute=True)
 
         # Union
         wPair = mc.polyBoolOp(right, left, n="wheelPair#")
         self._names = mc.polyBoolOp(axel, wPair[0], n="axelWheelSet#")
-        mc.rotate(90, z=True, absolute=True)
+        mc.rotate(90, z=True, absolute=True)  # Vertical to horizontal position
         self.clearHistory()
 
     def getSize(self):

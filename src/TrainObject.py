@@ -17,21 +17,26 @@ class Train(MayaObj):
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height * (7 / 8)
-        doorHeight = lowerHeight - 0.75
+        lowerBoxBevel = 0.3
+        lowerBoxPositionY = -(self._width * 1.25) - 1
+
+        doorWidth = lowerWidth + 1.0
+        doorHeight = lowerHeight * (3 / 4)
+        doorDepth = self._depth * (1/3)
+        doorPositionAlongCar = doorDepth/2  # This will place door side by side with center in middle of car
+        doorBevelOffset = 0.2
 
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
-        mc.polyBevel(lowerBox[0], offset=0.3)
+        mc.polyBevel(lowerBox[0], offset=lowerBoxBevel)
 
-        doorR = mc.polyCube(w=lowerWidth + 1.0, h=lowerHeight * (3 / 4), d=self._depth * (1 / 3), name="doorR#")
-        mc.move(self._depth * (1 / 3) / 2, z=True, absolute=True)
-        mc.polyBevel(doorR[0], offset=0.2)
-        doorL = mc.polyCube(w=lowerWidth + 1.0, h=lowerHeight * (3 / 4), d=self._depth * (1 / 3), name="doorL#")
-        mc.move(-self._depth * (1 / 3) / 2, z=True, absolute=True)
-        mc.polyBevel(doorL[0], offset=0.2)
-        door = mc.polyBoolOp(doorR[0], doorL[0], op=1, n="doors#")
+        for side in [-1, 1]:  # Left and right doors
+            door = mc.polyCube(w=doorWidth, h=doorHeight, d=doorDepth, name="door#")
+            mc.move(side * doorPositionAlongCar, z=True, absolute=True)
+            mc.polyBevel(door[0], offset=doorBevelOffset)
+            lowerBox = mc.polyBoolOp(lowerBox[0], door[0], op=1, n="lowerBodyBaseA#")
 
-        lowerBox = mc.polyBoolOp(lowerBox[0], door[0], op=1, n="lowerBodyBaseA#")
-        mc.move(-(self._width * 1.25) - 1, y=True, absolute=True)
+        mc.select(lowerBox[0], r=True)
+        mc.move(lowerBoxPositionY, y=True, absolute=True)
 
         return lowerBox
 
