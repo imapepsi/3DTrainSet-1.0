@@ -80,17 +80,4 @@ class Engine(TrainObject.Train):
             count += 1
 
         # Hangers of the lower compartment
-        increment = int(self._depth / 10)
-        startZ = int((-self._depth / 2) + 2)
-        count = 1
-        octagon = 8
-        for z in range(startZ, int(self._depth / 2), increment):
-            if not (4 <= count <= 6):
-                circles = mc.polyCylinder(r=1, h=self._width + 0.25, name="hangerCore#")
-                rings = mc.polyCylinder(r=1.5, h=2, subdivisionsAxis=octagon, name="ring#")
-                mc.move(-(self._width + 0.25) / 2, y=True, absolute=True)
-                circles = mc.polyBoolOp(circles[0], rings[0], op=1, n="hangers#")
-                mc.move(-self._height * 1 / 3, y=True, absolute=True)  # Shift down
-                mc.move(z, z=True, absolute=True)
-                self._base = mc.polyBoolOp(self._base[0], circles[0], op=1, n="baseTrainHR#")
-            count += 1
+        self._hangers()

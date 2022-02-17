@@ -16,7 +16,7 @@ class CarTypeB(Train):
         lowerBox = mc.polyBoolOp(lowerBox[0], cutHole[0], op=2, n="lowerBodyBaseA#")
 
         mc.select(lowerBox[0], r=True)
-        mc.move(-(self._width * 1.25) - 1, y=True, absolute=True)
+        mc.move(-(self._width * 1.5) + 0.5, y=True, absolute=True)
 
         return lowerBox
 
@@ -57,17 +57,23 @@ class CarTypeB(Train):
                 mc.delete(self._base[0], constructionHistory=True)
 
         # Hangers of the lower compartment
+        self._hangers()
+
+    def _hangers(self):
+        # Hangers of the lower compartment
+        heightOfHanger = self._width + 2
         increment = int(self._depth / 10)
         startZ = int((-self._depth / 2) + 2)
         count = 1
+        octagon = 8
         for z in range(startZ, int(self._depth / 2), increment):
             if not (4 <= count <= 6):
-                circles = mc.polyCylinder(r=1, h=self._width + 0.25, name="hangerCore#")
+                circles = mc.polyCylinder(r=1, h=heightOfHanger, name="hangerCore#")
                 rings = mc.polyCylinder(r=1.5, h=2, subdivisionsAxis=octagon, name="ring#")
-                mc.move(-(self._width + 0.25) / 2, y=True, absolute=True)
+                mc.move(-heightOfHanger/2, y=True, absolute=True)
                 circleAndRing = mc.polyBoolOp(circles[0], rings[0], op=1, n="hangers#")
                 mc.delete(circleAndRing[0], constructionHistory=True)
-                mc.move(-self._height * 1 / 3, z, yz=True, absolute=True)  # Shift down
+                mc.move(-self._height * 1/3, z, yz=True, absolute=True)  # Shift down
                 self._base = mc.polyBoolOp(self._base[0], circleAndRing[0], op=1, n="baseTrainHR#")
                 # Can't do a delete history here, not sure why
             count += 1

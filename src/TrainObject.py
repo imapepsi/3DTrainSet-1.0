@@ -90,6 +90,10 @@ class Train(MayaObj):
             count += 1
 
         # Hangers of the lower compartment
+        self._hangers()
+
+    def _hangers(self):
+        # Hangers of the lower compartment
         increment = int(self._depth / 10)
         startZ = int((-self._depth / 2) + 2)
         count = 1
