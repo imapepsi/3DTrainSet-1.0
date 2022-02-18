@@ -10,7 +10,6 @@ class Engine(TrainObject.Train):
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height/2
-        lowerBoxBevel = 0.3
         lowerBoxPositionY = -(lowerHeight*2)
 
         boxPanelWidth = lowerWidth-1

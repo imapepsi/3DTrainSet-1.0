@@ -30,9 +30,6 @@ class CarTypeB(Train):
         self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
         mc.polyBevel(self._base[0], offset=self._carBevel)
 
-        lowerBox = self._createLowerCar()
-        self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
-
         self._connectors()
 
         # Side circles
@@ -49,6 +46,9 @@ class CarTypeB(Train):
 
         # Hangers of the lower compartment
         self._hangers()
+
+        lowerBox = self._createLowerCar()
+        self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
 
     def _hangers(self):
         # Hangers of the lower compartment
