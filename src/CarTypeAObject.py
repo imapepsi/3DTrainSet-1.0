@@ -43,17 +43,17 @@ class CarTypeA(Train):
         self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
         mc.polyBevel(self._base[0], offset=self._carBevel)
 
+        # TODO(): Can't put these at the end of the function for some reason: car isn't even created
         lowerBox = self._createLowerCar()
         self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
 
         self._connectors()
 
         # TODO(): Keep Fixing
-        increment = int(self._depth / 2)
-        startZ = int((-self._depth / 2) + 4)
-        for z in range(startZ, int(self._depth / 2), increment):
+        z = self._depth/4
+        for side in [-1, 1]:
             panel = mc.polyCube(w=self._width + 1.0, h=self._height / 3, d=4, name="panel#")
-            mc.move(z, z=True, absolute=True)
+            mc.move(side*z, z=True, absolute=True)
             self._base = mc.polyBoolOp(self._base[0], panel[0], op=1, n="baseTrainSP#")
             mc.delete(self._base[0], constructionHistory=True)
 
