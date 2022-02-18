@@ -7,7 +7,6 @@ class CarTypeB(Train):
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height * (7 / 8)
-        lowerBoxBevel = 0.3
         lowerBoxPositionY = -(self._width * 1.5) + 0.5
 
         cutHoleWidth = lowerWidth + 1.0
@@ -15,7 +14,7 @@ class CarTypeB(Train):
         cutHoleDepth = self._depth - 2
 
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
-        mc.polyBevel(lowerBox[0], offset=lowerBoxBevel)
+        mc.polyBevel(lowerBox[0], offset=self._carBevel)
 
         cutHole = mc.polyCube(w=cutHoleWidth, h=cutHoleHeight, d=cutHoleDepth, name="cutHole#")
         lowerBox = mc.polyBoolOp(lowerBox[0], cutHole[0], op=2, n="lowerBodyBaseA#")
@@ -25,29 +24,16 @@ class CarTypeB(Train):
 
         return lowerBox
 
-    def createBaseCar(self):
+    def _createBaseCar(self):
         octagon = 8
 
-        box = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
-        mc.polyBevel(box[0], offset=0.3)
+        self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
+        mc.polyBevel(self._base[0], offset=self._carBevel)
 
         lowerBox = self._createLowerCar()
-        box = mc.polyBoolOp(box[0], lowerBox[0], op=1, n="body#")
+        self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
 
-        # Ends/Connectors
-        pyramids = []
-        for factor in [-1, 1]:
-            pyramid = mc.polyPyramid(sideLength=self._width*(3/4), n="pyramid#")
-            mc.polyBevel(pyramid[0], segments=5, offset=0.2)
-            mc.select(pyramid[0], r=True)
-            mc.rotate(factor*90, x=True, absolute=True)  # Order of rotations is important
-            mc.rotate(45, z=True, absolute=True)
-            mc.move((factor*self._depth/2) + (factor*2.5), z=True, absolute=True)  # 2.5 gives nice edge around it
-            pyramids.append(pyramid)
-
-        self._base = mc.polyBoolOp(box[0], pyramids[0][0], op=1, n="bodyBaseA#")
-        self._base = mc.polyBoolOp(self._base[0], pyramids[1][0], op=1, n="baseTrainBody#")
-        mc.delete(self._base[0], constructionHistory=True)
+        self._connectors()
 
         # Side circles
         startY = 0

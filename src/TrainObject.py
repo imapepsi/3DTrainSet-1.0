@@ -13,11 +13,11 @@ class Train(MayaObj):
         self._width = w
         self._height = h
         self._depth = d
+        self._carBevel = 0.3
 
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height * (7 / 8)
-        lowerBoxBevel = 0.3
         lowerBoxPositionY = -(self._width * 1.25) - 1
 
         doorWidth = lowerWidth + 1.0
@@ -27,7 +27,7 @@ class Train(MayaObj):
         doorBevelOffset = 0.2
 
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
-        mc.polyBevel(lowerBox[0], offset=lowerBoxBevel)
+        mc.polyBevel(lowerBox[0], offset=self._carBevel)
 
         for side in [-1, 1]:  # Left and right doors
             door = mc.polyCube(w=doorWidth, h=doorHeight, d=doorDepth, name="door#")
@@ -40,27 +40,11 @@ class Train(MayaObj):
 
         return lowerBox
 
-    def createBaseCar(self):
-        box = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
-        mc.polyBevel(box[0], offset=0.3)
+    def _createBaseCar(self):
+        self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
+        mc.polyBevel(self._base[0], offset=self._carBevel)
 
-        lowerBox = self._createLowerCar()
-        box = mc.polyBoolOp(box[0], lowerBox[0], op=1, n="body#")
-
-        # Ends/Connectors
-        pyramids = []
-        for factor in [-1, 1]:
-            pyramid = mc.polyPyramid(sideLength=self._width*(3/4), n="pyramid#")
-            mc.polyBevel(pyramid[0], segments=5, offset=0.2)
-            mc.select(pyramid[0], r=True)
-            mc.rotate(factor*90, x=True, absolute=True)  # Order of rotations is important
-            mc.rotate(45, z=True, absolute=True)
-            mc.move((factor*self._depth/2) + (factor*2.5), z=True, absolute=True)  # 2.5 gives nice edge around it
-            pyramids.append(pyramid)
-
-        self._base = mc.polyBoolOp(box[0], pyramids[0][0], op=1, n="bodyBaseA#")
-        self._base = mc.polyBoolOp(self._base[0], pyramids[1][0], op=1, n="baseTrainBody#")
-        mc.delete(self._base[0], constructionHistory=True)
+        self._connectors()
 
         # Side panels
         centerPanel = mc.polyCube(w=self._width + 1.0, h=self._height - 1, d=4.0, name="panel#")
@@ -97,6 +81,9 @@ class Train(MayaObj):
         # Hangers of the lower compartment
         self._hangers()
 
+        lowerBox = self._createLowerCar()
+        self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
+
     def _hangers(self):
         # Hangers of the lower compartment
         increment = int(self._depth / 10)
@@ -114,6 +101,21 @@ class Train(MayaObj):
                 self._base = mc.polyBoolOp(self._base[0], circleAndRing[0], op=1, n="baseTrainHR#")
                 # Can't do a delete history here, not sure why
             count += 1
+
+    def _connectors(self):
+        pyramids = []
+        for end in [-1, 1]:  # Back or front end
+            pyramid = mc.polyPyramid(sideLength=self._width * (3 / 4), n="pyramid#")
+            mc.polyBevel(pyramid[0], segments=5, offset=0.2)
+            mc.select(pyramid[0], r=True)
+            mc.rotate(end * 90, x=True, absolute=True)  # Order of rotations is important
+            mc.rotate(45, z=True, absolute=True)
+            mc.move((end * self._depth / 2) + (end * 2.5), z=True, absolute=True)  # 2.5 gives nice edge around it
+            pyramids.append(pyramid)
+
+        self._base = mc.polyBoolOp(self._base[0], pyramids[0][0], op=1, n="bodyBaseA#")
+        self._base = mc.polyBoolOp(self._base[0], pyramids[1][0], op=1, n="baseTrainBody#")
+        mc.delete(self._base[0], constructionHistory=True)
 
     def buildBaseAndWheels(self):
         wheelLocZ = self._depth/2  # quarter along body
@@ -177,7 +179,7 @@ class Train(MayaObj):
 
         # Build Body
         baseLocY = (self._height/2) + mediumLocY
-        self.createBaseCar()
+        self._createBaseCar()
         mc.select(self._base, r=True)
         mc.move(-baseLocY, self._width/2, yz=True, absolute=True)  # Line up with wheels
 

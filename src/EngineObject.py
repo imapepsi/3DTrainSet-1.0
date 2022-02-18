@@ -25,7 +25,7 @@ class Engine(TrainObject.Train):
         tubePositionY = -(lowerHeight * 3)
 
         lowerBox = mc.polyCube(w=lowerWidth, h=lowerHeight, d=self._depth, name="lowerBodyBase#")
-        mc.polyBevel(lowerBox[0], offset=lowerBoxBevel)
+        mc.polyBevel(lowerBox[0], offset=self._carBevel)
 
         boxPanel = mc.polyCube(w=boxPanelWidth, h=boxPanelHeight, d=1, name="lowerBoxPanel#")
         mc.move(-self._depth, z=True, absolute=True)
@@ -58,14 +58,11 @@ class Engine(TrainObject.Train):
 
         return lowerCompartment
 
-    def createBaseCar(self):
-        box = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
-        mc.polyBevel(box[0], offset=0.3)
+    def _createBaseCar(self):
+        self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
+        mc.polyBevel(self._base[0], offset=self._carBevel)
 
-        lowerBox = self._createLowerCar()
-        box = mc.polyBoolOp(box[0], lowerBox[0], op=1, n="body#")
-
-        # End connector
+        # End connector (No Front)
         back = mc.polyPyramid(sideLength=self._width * (3 / 4), n="backPyramid#")
         mc.polyBevel(back[0], segments=5, offset=0.2)
         mc.select(back[0], r=True)
@@ -73,9 +70,7 @@ class Engine(TrainObject.Train):
         mc.rotate(45, z=True, absolute=True)
         mc.move((self._depth / 2) + 2.5, z=True, absolute=True)
 
-        # No Front
-
-        self._base = mc.polyBoolOp(box[0], back[0], op=1, n="baseEngineBody#")
+        self._base = mc.polyBoolOp(self._base[0], back[0], op=1, n="baseEngineBody#")
         mc.delete(self._base[0], constructionHistory=True)
 
         # Side panels
@@ -95,3 +90,6 @@ class Engine(TrainObject.Train):
 
         # Hangers of the lower compartment
         self._hangers()
+
+        lowerBox = self._createLowerCar()
+        self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
