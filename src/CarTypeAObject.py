@@ -23,6 +23,7 @@ class CarTypeA(Train):
 
         # TODO(): Could just increment where I'm cutting
         # Build Bars for compartment
+        # Add bolts on top???
         leftSidePositionX = lowerWidth/2-0.5
         rightSidePositionX = -lowerWidth/2+0.5
         startZ = int((-cutHoleDepth/2)+3)
