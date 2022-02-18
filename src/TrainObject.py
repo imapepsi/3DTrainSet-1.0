@@ -40,7 +40,7 @@ class Train(MayaObj):
 
         return lowerBox
 
-    def _createBaseCar(self):
+    def _createUpperCar(self):
         self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
         mc.polyBevel(self._base[0], offset=self._carBevel)
 
@@ -179,7 +179,7 @@ class Train(MayaObj):
 
         # Build Body
         baseLocY = (self._height/2) + mediumLocY
-        self._createBaseCar()
+        self._createUpperCar()
         mc.select(self._base, r=True)
         mc.move(-baseLocY, self._width/2, yz=True, absolute=True)  # Line up with wheels
 

@@ -58,7 +58,7 @@ class Engine(TrainObject.Train):
 
         return lowerCompartment
 
-    def _createBaseCar(self):
+    def _createUpperCar(self):
         self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
         mc.polyBevel(self._base[0], offset=self._carBevel)
 
