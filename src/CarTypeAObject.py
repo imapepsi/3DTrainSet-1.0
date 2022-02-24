@@ -50,12 +50,25 @@ class CarTypeA(Train):
 
         self._connectors()
 
-        # TODO(): Keep Fixing
         z = self._depth/4
-        for side in [-1, 1]:
+        for side in [-1, 0, 1]:
             panel = mc.polyCube(w=self._width + 1.0, h=self._height / 3, d=4, name="panel#")
-            mc.move(side*z, z=True, absolute=True)
+            if side != 0:  # Not the center panel
+                mc.move(side*z, z=True, absolute=True)
             self._base = mc.polyBoolOp(self._base[0], panel[0], op=1, n="baseTrainSP#")
+            mc.delete(self._base[0], constructionHistory=True)
+
+        tubeRadius = 0.75
+        tubeHeight = self._depth/2 + 3
+        tubeSubDiv = 8  # Octagon Shape
+        tubePosX = self._width/2
+        tubePosY = -self._height/2 + tubeRadius*2
+
+        for side in [-1, 1]:
+            tube = mc.polyCylinder(r=tubeRadius, h=tubeHeight, subdivisionsAxis=tubeSubDiv, name="tube#")
+            mc.move(tubePosX*side, tubePosY, xy=True, absolute=True)
+            mc.rotate(90, x=True, absolute=True)
+            self._base = mc.polyBoolOp(self._base[0], tube[0], op=1, n="body#")
             mc.delete(self._base[0], constructionHistory=True)
 
         # Hangers of the lower compartment

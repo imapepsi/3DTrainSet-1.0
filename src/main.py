@@ -19,4 +19,10 @@ importlib.reload(GuiWindowObject)
 print("Track")
 myWindow = GuiWindowObject.GuiWindow()
 
+import CarTypeAObject
+importlib.reload(CarTypeAObject)
+
+#car = CarTypeAObject.CarTypeA()
+#car.buildBaseAndWheels()
+
 print("\n" + "Program Complete" + "\n")  # Debug Checker
