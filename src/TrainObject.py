@@ -152,7 +152,7 @@ class Train(MayaObj):
         # (axelLength / 2) + (cordBendRadius / 2) - 0.5 #0.5 so it connects to lower wheel
         wireLocX = (self._wheelSets[0].getAxelLength()/2) + (exWire.getBendRadius()/2) - 0.5
         wireList = []
-        for x in [-wireLocX, wireLocX]: # LeftSide, RightSide
+        for x in [-wireLocX, wireLocX]:  # LeftSide, RightSide
             wireLocZ = self._depth / 2  # So it can be incremented
             for i in range(2):
                 wire = Wire()
@@ -164,10 +164,10 @@ class Train(MayaObj):
                     mc.rotate(180, z=True, absolute=True)
                 self._wires.append(wire)
 
-            if x == -wireLocX: # Left
+            if x == -wireLocX:  # Left
                 wireList.append(mc.polyBoolOp(self._wires[0].getName(), self._wires[1].getName(), op=1, name="leftWires#"))
                 mc.delete(wireList[0][0], constructionHistory=True)
-            else: # Right
+            else:  # Right
                 wireList.append(mc.polyBoolOp(self._wires[2].getName(), self._wires[3].getName(), op=1, name="rightWires#"))
                 mc.delete(wireList[1][0], constructionHistory=True)
 

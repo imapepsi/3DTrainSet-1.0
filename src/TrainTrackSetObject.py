@@ -7,6 +7,7 @@ import CarTypeAObject
 import CarTypeBObject
 import CarTypeCObject
 import CarTypeDObject
+import CarTypeEObject
 from random import seed
 from random import randint
 from time import time
@@ -19,6 +20,7 @@ importlib.reload(CarTypeAObject)
 importlib.reload(CarTypeBObject)
 importlib.reload(CarTypeCObject)
 importlib.reload(CarTypeDObject)
+importlib.reload(CarTypeEObject)
 
 
 class TrainTrackSet(MayaObj):
@@ -60,7 +62,7 @@ class TrainTrackSet(MayaObj):
         seed(time())
         z = 25
         for i in range(self._numCars):
-            carType = randint(1, 4)
+            carType = randint(1, 6)
 
             if carType == 1:
                 self._cars.append(TrainObject.Train())
@@ -84,6 +86,11 @@ class TrainTrackSet(MayaObj):
 
             elif carType == 5:
                 self._cars.append(CarTypeDObject.CarTypeD())
+                self._cars[-1].buildBaseAndWheels()
+                mc.move(z, z=True, absolute=True)
+
+            elif carType == 6:
+                self._cars.append(CarTypeEObject.CarTypeE())
                 self._cars[-1].buildBaseAndWheels()
                 mc.move(z, z=True, absolute=True)
 
