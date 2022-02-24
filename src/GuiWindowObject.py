@@ -56,6 +56,6 @@ class GuiWindow:
         mc.hyperShade(assign=lambert)
 
         # Create Light
-        mutils.createLocator("aiSkyDomeLight", asLight=True)
+        # mutils.createLocator("aiSkyDomeLight", asLight=True)
 
         # rotation=(0, 135, 0)

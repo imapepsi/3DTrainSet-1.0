@@ -56,6 +56,7 @@ class TrainTrackSet(MayaObj):
         self._numCars = numCars
 
     def buildTrain(self):
+        carTypes = []
         self._engine.append(EngineObject.Engine())
         self._engine[0].buildBaseAndWheels()
 
@@ -63,6 +64,7 @@ class TrainTrackSet(MayaObj):
         z = 25
         for i in range(self._numCars):
             carType = randint(1, 6)
+            carTypes.append(carType)
 
             if carType == 1:
                 self._cars.append(TrainObject.Train())
