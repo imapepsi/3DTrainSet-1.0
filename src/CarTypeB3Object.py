@@ -2,9 +2,10 @@ import maya.cmds as mc
 from TrainObject import Train
 
 # Mix of Default and TypeB
+# Default Lower and TypeB Upper
 
 
-class CarTypeD(Train):
+class CarTypeB3(Train):
     def _createUpperCar(self):
         octagon = 8
 
