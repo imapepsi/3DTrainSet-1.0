@@ -29,7 +29,7 @@ class GuiWindow:
         mc.separator(height=20)
         self._numTracks = mc.intSliderGrp(field=True, label='Number of Tracks', minValue=1, maxValue=3, fieldMinValue=1, fieldMaxValue=3, value=0)
         mc.separator(height=20)
-        self._numCars = mc.intSliderGrp(field=True, label='Number of Cars', minValue=3, maxValue=6, fieldMinValue=3, fieldMaxValue=6, value=0)
+        self._numCars = mc.intSliderGrp(field=True, label='Number of Cars', minValue=3, maxValue=10, fieldMinValue=3, fieldMaxValue=10, value=0)
         self._buildTrackButton = mc.button(label='Build Train', command=self.buildUserTrainSet)
 
         # display new window

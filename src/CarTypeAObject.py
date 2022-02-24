@@ -62,7 +62,7 @@ class CarTypeA(Train):
         tubeHeight = self._depth/2 + 3
         tubeSubDiv = 8  # Octagon Shape
         tubePosX = self._width/2
-        tubePosY = -self._height/2 + tubeRadius*2
+        tubePosY = -self._height/2 + tubeRadius*2 + 0.25
 
         for side in [-1, 1]:
             tube = mc.polyCylinder(r=tubeRadius, h=tubeHeight, subdivisionsAxis=tubeSubDiv, name="tube#")
