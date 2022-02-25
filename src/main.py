@@ -25,6 +25,7 @@ import maya.cmds as mc
 import TrainObject
 import EngineObject
 import CarTypeAObject
+import CarTypeA2Object
 import CarTypeBObject
 import CarTypeB2Object
 import CarTypeB3Object
@@ -32,6 +33,7 @@ import CarTypeCObject
 importlib.reload(TrainObject)
 importlib.reload(EngineObject)
 importlib.reload(CarTypeAObject)
+importlib.reload(CarTypeA2Object)
 importlib.reload(CarTypeBObject)
 importlib.reload(CarTypeB2Object)
 importlib.reload(CarTypeB3Object)
@@ -56,21 +58,26 @@ def buildTrainExample():
             mc.move(z, z=True, absolute=True)
 
         elif carType == 3:
-            cars.append(CarTypeBObject.CarTypeB())
+            cars.append(CarTypeA2Object.CarTypeA2())
             cars[-1].buildBaseAndWheels()
             mc.move(z, z=True, absolute=True)
 
         elif carType == 4:
-            cars.append(CarTypeB2Object.CarTypeB2())
+            cars.append(CarTypeBObject.CarTypeB())
             cars[-1].buildBaseAndWheels()
             mc.move(z, z=True, absolute=True)
 
         elif carType == 5:
-            cars.append(CarTypeB3Object.CarTypeB3())
+            cars.append(CarTypeB2Object.CarTypeB2())
             cars[-1].buildBaseAndWheels()
             mc.move(z, z=True, absolute=True)
 
         elif carType == 6:
+            cars.append(CarTypeB3Object.CarTypeB3())
+            cars[-1].buildBaseAndWheels()
+            mc.move(z, z=True, absolute=True)
+
+        elif carType == 7:
             cars.append(CarTypeCObject.CarTypeC())
             cars[-1].buildBaseAndWheels()
             mc.move(z, z=True, absolute=True)
@@ -83,7 +90,9 @@ def buildTrainExample():
     mc.rotate(180, y=True, absolute=True)
     mc.move(z + d / 2, z=True, absolute=True)  # 29 is the length of a car that allows some overlap for connection
 
+#buildTrainExample()
 
-buildTrainExample()
+car = CarTypeA2Object.CarTypeA2()
+car.buildBaseAndWheels()
 
 print("\n" + "Program Complete" + "\n")  # Debug Checker

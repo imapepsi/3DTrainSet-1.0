@@ -80,7 +80,7 @@ class CarTypeA(Train):
         startZ = int((-self._depth / 2) + 2)
         octagon = 8
         for z in range(startZ, int(self._depth / 2), increment):
-                circles = mc.polyCylinder(r=1, h=self._width * (3/4), subdivisionsAxis=octagon, name="hangerCore#")
-                mc.move(-self._height * 1 / 3, z, yz=True, absolute=True)  # Shift down
-                self._base = mc.polyBoolOp(self._base[0], circles[0], op=1, n="baseTrainHR#")
-                # Can't do a delete history here, not sure why
+            circles = mc.polyCylinder(r=1, h=self._width * (3/4), subdivisionsAxis=octagon, name="hangerCore#")
+            mc.move(-self._height * 1 / 3, z, yz=True, absolute=True)  # Shift down
+            self._base = mc.polyBoolOp(self._base[0], circles[0], op=1, n="baseTrainHR#")
+            # Can't do a delete history here, not sure why

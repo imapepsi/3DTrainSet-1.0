@@ -4,6 +4,7 @@ from TrainObject import Train
 # Mix of Default and TypeB
 # Default Upper and TypeB Lower
 
+
 class CarTypeB2(Train):
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
