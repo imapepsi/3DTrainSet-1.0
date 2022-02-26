@@ -30,6 +30,7 @@ import CarTypeBObject
 import CarTypeB2Object
 import CarTypeB3Object
 import CarTypeCObject
+import CarTypeC2Object
 importlib.reload(TrainObject)
 importlib.reload(EngineObject)
 importlib.reload(CarTypeAObject)
@@ -38,6 +39,7 @@ importlib.reload(CarTypeBObject)
 importlib.reload(CarTypeB2Object)
 importlib.reload(CarTypeB3Object)
 importlib.reload(CarTypeCObject)
+importlib.reload(CarTypeC2Object)
 
 
 def buildTrainExample():
@@ -45,7 +47,7 @@ def buildTrainExample():
     cars[0].buildBaseAndWheels()
 
     z = 25
-    for carType in range(1, 7):
+    for carType in range(1, 8):
 
         if carType == 1:
             cars.append(TrainObject.Train())
@@ -77,6 +79,11 @@ def buildTrainExample():
             cars[-1].buildBaseAndWheels()
             mc.move(z, z=True, absolute=True)
 
+        elif carType == 7:
+            cars.append(CarTypeC2Object.CarTypeC2())
+            cars[-1].buildBaseAndWheels()
+            mc.move(z, z=True, absolute=True)
+
         z += 25  # Length of a whole train is 29
 
     cars.append(EngineObject.Engine())
@@ -85,13 +92,9 @@ def buildTrainExample():
     mc.rotate(180, y=True, absolute=True)
     mc.move(z + d / 2, z=True, absolute=True)  # 29 is the length of a car that allows some overlap for connection
 
-    lambert = mc.shadingNode('lambert', asShader=True)
-    mc.select(all=True)
-    mc.hyperShade(assign=lambert)
-
 buildTrainExample()
 
-#car = CarTypeA2Object.CarTypeA2()
-#car._createUpperCar()
+#car = CarTypeC2Object.CarTypeC2()
+#car.buildBaseAndWheels()
 
 print("\n" + "Program Complete" + "\n")  # Debug Checker
