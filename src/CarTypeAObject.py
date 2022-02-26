@@ -50,26 +50,46 @@ class CarTypeA(Train):
 
         self._connectors()
 
-        z = self._depth/4
+        panelPosZ = self._depth/4
+        panelPosY = -1
         for side in [-1, 0, 1]:
-            panel = mc.polyCube(w=self._width + 1.0, h=self._height / 3, d=4, name="panel#")
+            panel1 = mc.polyCube(w=self._width + 1, h=self._height / 2, d=4, name="panelA#")
+            panel2 = mc.polyCube(w=self._width + 1.5, h=self._height/2 - 1, d=3, name="panelB#")
+            panel3 = mc.polyCube(w=self._width + 1.75, h=self._height/2 - 1.5, d=2.5, name="panelB#")
+            panelA = mc.polyBoolOp(panel1[0], panel2[0], op=1, name="panelAB#")
+            panel = mc.polyBoolOp(panelA[0], panel3[0], op=1, name="panel#")
+            mc.move(panelPosY + 0.5, y=True, absolute=True)
             if side != 0:  # Not the center panel
-                mc.move(side*z, z=True, absolute=True)
+                mc.move(panelPosY, side*panelPosZ, yz=True, absolute=True)
             self._base = mc.polyBoolOp(self._base[0], panel[0], op=1, n="baseTrainSP#")
             mc.delete(self._base[0], constructionHistory=True)
 
-        tubeRadius = 0.75
-        tubeHeight = self._depth/2 + 3
-        tubeSubDiv = 8  # Octagon Shape
-        tubePosX = self._width/2
-        tubePosY = -self._height/2 + tubeRadius*2 + 0.25
+        # More texture
+        cubeWidth = self._width + 0.75
+        cubeHeight = 0.25
+        cubeDepth = self._depth - 2.5
+        cubePosY = self._height / 3 - 1
+        y = cubePosY
+        yInc = 0.5
+        numCubes = 14
+        for i in range(numCubes):
+            cube = mc.polyCube(w=cubeWidth, h=cubeHeight, d=cubeDepth, name="cubePanel#")
+            mc.move(y, y=True, absolute=True)
+            self._base = mc.polyBoolOp(self._base[0], cube[0], op=1, n="baseTrainBodyCubePanelA#")
+            y -= yInc
 
-        for side in [-1, 1]:
-            tube = mc.polyCylinder(r=tubeRadius, h=tubeHeight, subdivisionsAxis=tubeSubDiv, name="tube#")
-            mc.move(tubePosX*side, tubePosY, xy=True, absolute=True)
-            mc.rotate(90, x=True, absolute=True)
-            self._base = mc.polyBoolOp(self._base[0], tube[0], op=1, n="body#")
-            mc.delete(self._base[0], constructionHistory=True)
+        cubePosY = -((2 * yInc) - cubeHeight/2)
+        cubePosZ = cubeDepth/2 + cubeHeight/2
+        z = cubePosZ + 0.125
+        cubeVerticalHeight = ((numCubes-1) * yInc) + cubeHeight + 0.25
+        for i in range(19):
+            if i != 0 and i != 18:
+                # Swap depth for height
+                cube = mc.polyCube(w=cubeWidth, h=cubeVerticalHeight, d=cubeHeight, name="cubePanel#")
+                mc.move(cubePosY, z, yz=True, absolute=True)
+                self._base = mc.polyBoolOp(self._base[0], cube[0], op=1, n="baseTrainBodyCubePanelB#")
+                print(f"i:{i} + z:{z}")
+            z -= 1
 
         # Hangers of the lower compartment
         self._hangers()
