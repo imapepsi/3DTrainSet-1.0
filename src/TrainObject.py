@@ -35,6 +35,25 @@ class Train(MayaObj):
             mc.polyBevel(door[0], offset=doorBevelOffset)
             lowerBox = mc.polyBoolOp(lowerBox[0], door[0], op=1, n="lowerBodyBaseA#")
 
+        # More texture
+        cubeWidth = doorWidth - 0.5
+        cubeHeight = 0.25
+        cubeDepth = self._depth - 2.5
+        cubePosY = doorHeight / 2 - 0.5
+        y = cubePosY
+        for i in range(5):
+            cube = mc.polyCube(w=cubeWidth, h=cubeHeight, d=cubeDepth, name="cubePanel#")
+            mc.move(y, y=True, absolute=True)
+            lowerBox = mc.polyBoolOp(lowerBox[0], cube[0], op=1, n="baseTrainBodyCubePanelA#")
+            y -= 0.5
+
+        y = -cubePosY
+        for i in range(5):
+            cube2 = mc.polyCube(w=cubeWidth, h=cubeHeight, d=cubeDepth, name="cubePanel#")
+            mc.move(y, y=True, absolute=True)
+            lowerBox = mc.polyBoolOp(lowerBox[0], cube2[0], op=1, n="baseTrainBodyCubePanelB#")
+            y += 0.5
+
         mc.select(lowerBox[0], r=True)
         mc.move(lowerBoxPositionY, y=True, absolute=True)
 
@@ -47,17 +66,44 @@ class Train(MayaObj):
         self._connectors()
 
         # Side panels
-        centerPanel = mc.polyCube(w=self._width + 1.0, h=self._height - 1, d=4.0, name="panel#")
+        centerPanelWidth = self._width + 1.0
+        centerPanelHeight = self._height - 1
+        centerPanelDepth = 4
+
+        sidePanelWidth = self._width + 1.0
+        sidePanelHeight = self._height / 3
+        sidePanelDepth = 1
+
+        centerPanel = mc.polyCube(w=centerPanelWidth, h=centerPanelHeight, d=centerPanelDepth, name="panel#")
         self._base = mc.polyBoolOp(self._base[0], centerPanel[0], op=1, n="baseTrainBodyCP#")
         mc.delete(self._base[0], constructionHistory=True)
 
         increment = int(self._depth / 10)
         startZ = int((-self._depth / 2) + 2)
         for z in range(startZ, int(self._depth / 2), increment):
-            panel = mc.polyCube(w=self._width + 1.0, h=self._height / 3, d=1, name="panel#")
+            panel = mc.polyCube(w=sidePanelWidth, h=sidePanelHeight, d=sidePanelDepth, name="panel#")
             mc.move(z, z=True, absolute=True)
             self._base = mc.polyBoolOp(self._base[0], panel[0], op=1, n="baseTrainSP#")
             mc.delete(self._base[0], constructionHistory=True)
+
+        # More texture
+        cubeWidth = self._width + 0.5
+        cubeHeight = 0.25
+        cubeDepth = self._depth - 2.5
+        cubePosY = sidePanelHeight / 2 - 0.5
+        y = cubePosY
+        for i in range(3):
+            cube = mc.polyCube(w=cubeWidth, h=cubeHeight, d=cubeDepth, name="cubePanel#")
+            mc.move(y, y=True, absolute=True)
+            self._base = mc.polyBoolOp(self._base[0], cube[0], op=1, n="baseTrainBodyCubePanelA#")
+            y += 0.5
+
+        y = -cubePosY
+        for i in range(3):
+            cube2 = mc.polyCube(w=cubeWidth, h=cubeHeight, d=cubeDepth, name="cubePanel#")
+            mc.move(y, y=True, absolute=True)
+            self._base = mc.polyBoolOp(self._base[0], cube2[0], op=1, n="baseTrainBodyCubePanelB#")
+            y -= 0.5
 
         # Center circle
         circles = mc.polyCylinder(h=self._width + 2, name="circle#")

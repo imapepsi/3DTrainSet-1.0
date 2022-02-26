@@ -92,9 +92,9 @@ def buildTrainExample():
     mc.rotate(180, y=True, absolute=True)
     mc.move(z + d / 2, z=True, absolute=True)  # 29 is the length of a car that allows some overlap for connection
 
-buildTrainExample()
+#buildTrainExample()
 
-#car = EngineObject.Engine()
-#car.buildBaseAndWheels()
+car = TrainObject.Train()
+car.buildBaseAndWheels()
 
 print("\n" + "Program Complete" + "\n")  # Debug Checker

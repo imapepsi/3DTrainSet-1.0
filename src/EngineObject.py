@@ -83,6 +83,7 @@ class Engine(TrainObject.Train):
         # Side panels
         centerPanel = mc.polyCube(w=centerPanelWidth, h=centerPanelHeight, d=centerPanelDepth, name="panel#")
 
+        # More texture
         startY = centerPanelHeight/2
         gap = 1
         numCubes = cubeHeight/gap
