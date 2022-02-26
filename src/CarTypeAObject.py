@@ -31,7 +31,16 @@ class CarTypeA(Train):
         increment = 3
         for x in [leftSidePositionX, rightSidePositionX]:  # Left or Right edge of car
             for z in range(startZ, endZ, increment):
-                bar = mc.polyCube(w=barWidth, h=cutHoleHeight, d=barDepth, name="bar#")
+                barA = mc.polyCube(w=barWidth, h=cutHoleHeight, d=barDepth, name="barA#")
+                boltA = mc.polyCylinder(r=0.25, h=0.5, subdivisionsAxis=6, name="boltA#")
+                mc.rotate(90, z=True, absolute=True)
+                mc.move(x/6, (cutHoleHeight/2)+0.5, z/4, absolute=True)
+                boltB = mc.polyCylinder(r=0.25, h=0.5, subdivisionsAxis=6, name="boltB#")
+                mc.rotate(90, z=True, absolute=True)
+                mc.move(x/6, -(cutHoleHeight/2)-0.5, z/4, absolute=True)
+
+                bolt = mc.polyBoolOp(boltA[0], boltB[0], op=1, name="bolt#")
+                bar = mc.polyBoolOp(barA[0], bolt[0], op=1, name="bar#")
                 mc.move(x, z, xz=True, absolute=True)
                 lowerBox = mc.polyBoolOp(lowerBox[0], bar[0], op=1, n="lowerBodyBaseB#")
 
