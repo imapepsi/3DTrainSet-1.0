@@ -4,50 +4,6 @@ import math
 
 
 class CarTypeC(Train):
-    def _createUpperCar(self):
-        self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
-        mc.polyBevel(self._base[0], offset=self._carBevel)
-
-        self._connectors()
-
-        # Side panels
-        centerPanel = mc.polyCube(w=self._width + 1.0, h=self._height - 1, d=4.0, name="panel#")
-        self._base = mc.polyBoolOp(self._base[0], centerPanel[0], op=1, n="baseTrainBodyCP#")
-        mc.delete(self._base[0], constructionHistory=True)
-
-        increment = int(self._depth / 10)
-        startZ = int((-self._depth / 2) + 2)
-        for z in range(startZ, int(self._depth / 2), increment):
-            panel = mc.polyCube(w=self._width + 1.0, h=self._height / 3, d=1, name="panel#")
-            mc.move(z, z=True, absolute=True)
-            self._base = mc.polyBoolOp(self._base[0], panel[0], op=1, n="baseTrainSP#")
-            mc.delete(self._base[0], constructionHistory=True)
-
-        # Center circle
-        circles = mc.polyCylinder(h=self._width + 2, name="circle#")
-        mc.rotate(90, z=True, absolute=True)
-        self._base = mc.polyBoolOp(self._base[0], circles[0], op=1, n="baseTrainCC#")
-        mc.delete(self._base[0], constructionHistory=True)
-
-        # Side circle
-        increment = int(self._depth / 10)
-        startZ = int((-self._depth / 2) + 2)
-        count = 1
-        for z in range(startZ, int(self._depth / 2), increment):
-            if not (4 <= count <= 6):
-                circles = mc.polyCylinder(r=0.5, h=self._width + 0.25, name="circle#")
-                mc.rotate(90, z=True, absolute=True)
-                mc.move(-self._height * 1 / 3, z, yz=True, absolute=True)  # Shift down
-                self._base = mc.polyBoolOp(self._base[0], circles[0], op=1, n="baseTrainC#")
-                mc.delete(self._base[0], constructionHistory=True)
-            count += 1
-
-        # Hangers of the lower compartment
-        self._hangers()
-
-        lowerBox = self._createLowerCar()
-        self._base = mc.polyBoolOp(self._base[0], lowerBox[0], op=1, n="body#")
-
     def _createLowerCar(self):
         lowerWidth = self._width * (7 / 8)
         lowerHeight = self._height * (7 / 8)
@@ -70,7 +26,7 @@ class CarTypeC(Train):
         railPosZ = 2
         railPosX = self._width * (7/8) / 2
 
-        rungWidth = railWidth
+        rungWidth = railWidth + 0.5
         rungHeight = 0.5
         rungDepth = railPosZ*2
         rungPosX = railPosX
