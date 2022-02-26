@@ -94,7 +94,7 @@ def buildTrainExample():
 
 buildTrainExample()
 
-#car = CarTypeC2Object.CarTypeC2()
+#car = EngineObject.Engine()
 #car.buildBaseAndWheels()
 
 print("\n" + "Program Complete" + "\n")  # Debug Checker

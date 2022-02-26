@@ -58,6 +58,14 @@ class Engine(TrainObject.Train):
         return lowerCompartment
 
     def _createUpperCar(self):
+        centerPanelWidth = self._width + 1.0
+        centerPanelHeight = self._height - 5.0
+        centerPanelDepth = self._depth - 3.0
+
+        cubeWidth = centerPanelWidth + 1
+        cubeHeight = 0.5
+        cubeDepth = centerPanelDepth + 0.75
+
         self._base = mc.polyCube(w=self._width, h=self._height, d=self._depth, name="bodyBase#")
         mc.polyBevel(self._base[0], offset=self._carBevel)
 
@@ -73,7 +81,17 @@ class Engine(TrainObject.Train):
         mc.delete(self._base[0], constructionHistory=True)
 
         # Side panels
-        centerPanel = mc.polyCube(w=self._width + 1.0, h=self._height - 5.0, d=self._depth - 3.0, name="panel#")
+        centerPanel = mc.polyCube(w=centerPanelWidth, h=centerPanelHeight, d=centerPanelDepth, name="panel#")
+
+        startY = centerPanelHeight/2
+        gap = 1
+        numCubes = cubeHeight/gap
+        endY = -centerPanelHeight/2 - gap
+        for y in range(int(startY), int(endY), -gap):
+            cube = mc.polyCube(w=cubeWidth, h=cubeHeight, d=cubeDepth, name="cubePanel#")
+            mc.move(y, y=True, absolute=True)
+            self._base = mc.polyBoolOp(self._base[0], cube[0], op=1, n="baseTrainBodyCubePanel#")
+
         self._base = mc.polyBoolOp(self._base[0], centerPanel[0], op=1, n="baseTrainBodyCP#")
 
         # Side circle
