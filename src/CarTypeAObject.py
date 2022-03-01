@@ -97,7 +97,6 @@ class CarTypeA(Train):
                 cube = mc.polyCube(w=cubeWidth, h=cubeVerticalHeight, d=cubeHeight, name="cubePanel#")
                 mc.move(cubePosY, z, yz=True, absolute=True)
                 self._base = mc.polyBoolOp(self._base[0], cube[0], op=1, n="baseTrainBodyCubePanelB#")
-                print(f"i:{i} + z:{z}")
             z -= 1
 
         # Hangers of the lower compartment

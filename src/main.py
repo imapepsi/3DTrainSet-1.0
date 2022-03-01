@@ -17,7 +17,7 @@ import GuiWindowObject
 importlib.reload(GuiWindowObject)
 
 print("Track")
-# myWindow = GuiWindowObject.GuiWindow()
+myWindow = GuiWindowObject.GuiWindow()
 
 
 """For Modeling Purposes"""
@@ -92,7 +92,7 @@ def buildTrainExample():
     mc.rotate(180, y=True, absolute=True)
     mc.move(z + d / 2, z=True, absolute=True)  # 29 is the length of a car that allows some overlap for connection
 
-buildTrainExample()
+#buildTrainExample()
 
 #car = CarTypeAObject.CarTypeA()
 #car.buildBaseAndWheels()

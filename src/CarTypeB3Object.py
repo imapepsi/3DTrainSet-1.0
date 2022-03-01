@@ -32,7 +32,6 @@ class CarTypeB3(Train):
                 z += self._depth / 10
             y -= 1.75
 
-        print("new code")
         newHeight = height + 0.7
         startY = 2
         y = startY
@@ -49,8 +48,6 @@ class CarTypeB3(Train):
                 z += self._depth / 10
             y -= 1.75
             radius -= 0.05
-
-        print("end new code")
 
         # Hangers of the lower compartment
         self._hangers()
